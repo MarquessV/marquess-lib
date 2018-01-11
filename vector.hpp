@@ -13,6 +13,8 @@
 #include <initializer_list>
 #include <limits> // for std::numeric_limits<size_t>
 
+#include <iostream>
+
 namespace mqs
 {
 
@@ -24,7 +26,7 @@ namespace mqs
     size_t _size; 
     size_t _capacity;
 
-    void range_check(size_t i) {
+    void range_check(size_t i) const {
       if(i >= _size) {
         std::string error = "mqs::Vector::range_check: The index " + std::to_string(i) + " is out of bounds.";
         throw std::out_of_range(error);
@@ -36,17 +38,15 @@ namespace mqs
         _capacity = 2*_capacity;
         _capacity = (_capacity < _size ? std::numeric_limits<size_t>::max() : _capacity);
         T* new_arr = new T[_capacity];
-        for(size_t i = 0; i < _size; i++) {
-          new_arr[i] = arr[i];
-        }
-        delete[] arr;
+        std::copy(arr, arr+_size, new_arr);
+        delete []arr;
         arr = new_arr;
       }
     }
 
     void shrink_vector()
     {
-      if(size < capacity/4) {
+      if(size < _capacity/4) {
         _capacity /= 2;
         T* new_arr = new T[_capacity];
         for(size_t i = 0; i < _size; i++) {
@@ -68,9 +68,9 @@ namespace mqs
      */
     explicit Vector(const size_t n) 
     {
-      arr = new T[2*n];
       _size = n;
       _capacity = 2*_size;
+      arr = new T[_capacity];
       _capacity = (_capacity <= _size ? std::numeric_limits<size_t>::max() : _capacity);
     }
 
@@ -79,9 +79,9 @@ namespace mqs
      */
     explicit Vector(const size_t n, const T& t)
     {
-      arr = new T[n];
       _size = n;
       _capacity = 2*_size;
+      arr = new T[_capacity];
       _capacity = (_capacity <= _size ? std::numeric_limits<size_t>::max() : _capacity);
       for(size_t i = 0; i < _size; i++) {
         arr[i] = t;
@@ -94,10 +94,10 @@ namespace mqs
     Vector(const Vector& v)
     {
       _size = v.size();
-      arr = new T[_size];
       _capacity = v.capacity();
+      arr = new T[_capacity];
       for(size_t i = 0; i < _size; i++) {
-        arr[i] = v[i];
+        arr[i] = v.arr[i];
       }
     }
 
@@ -106,9 +106,9 @@ namespace mqs
      */
     Vector(const std::initializer_list<T>& l)
     {
-      arr = new T[l.size()];
       _size = l.size();
       _capacity = 2*_size;
+      arr = new T[_capacity];
       _capacity = (_capacity <= _size ? std::numeric_limits<size_t>::max() : _capacity);
       for(auto it = l.begin(); it < l.end(); it++) {
         arr[(it-l.begin())] = *it;
@@ -142,13 +142,24 @@ namespace mqs
       return _size == 0;
     }
 
+    /**
+     * Returns the element at index i, even if it is out of bounds of the Vector.
+     * @param the index of the wanted element
+     * @return the element at that index
+     */
+    T operator[](const size_t i) const
+    {
+      return arr[i];
+    }
+    
+
     /** 
      *  Attempts to return the element at the given index. Throws an out_of_range exception if the index is greater 
      *  than or equal to the number of elements in the array.
      *  @param the index of the wanted element
      *  @return the element held at index i in the Vector.
      */
-    T at(const size_t i)
+    T at(const size_t i) const
     {
       range_check(i);
       return arr[i];
@@ -164,7 +175,7 @@ namespace mqs
         throw std::length_error("mqs::Vector::push_back(): Vector exceeded max capacity.");
       }
       arr[_size++] = t;
-      grow_vector(); 
+      grow_vector();
     }
 
     void insert(const size_t i, const T& t)
@@ -253,7 +264,6 @@ namespace mqs
       }
       return found;
     }
-
 
   };
 

@@ -3,6 +3,34 @@
 #include <climits>
 #include <gtest/gtest.h>
 
+
+TEST(VectorConstructorTest, VectorConstuctorDefault) {
+  mqs::Vector<int> nil;
+  ASSERT_EQ(true, nil.empty());
+}
+
+TEST(VectorConstructorTest, VectorConstuctorSize) {
+  mqs::Vector<int> v(100);
+  ASSERT_EQ(100, v.size());
+  ASSERT_EQ(200, v.capacity());
+}
+
+TEST(VectorConstructorTest, VectorConstuctorFill) {
+  mqs::Vector<int> v(100, 9);
+  ASSERT_EQ(100, v.size());
+  for(size_t i = 0; i < v.size(); i++) {
+    ASSERT_EQ(9, v.at(i));
+  }
+}
+
+TEST(VectorConstructorTest, VectorConstructorCopy) {
+  mqs::Vector<int> a(100, 1);
+  mqs::Vector<int> b(a);
+  for(size_t i = 0; i < b.size(); i++) {
+    ASSERT_EQ(a.at(i), b.at(i));
+  }
+}
+
 TEST(VectorConstructorTest, VectorConstuctorIL) {
   mqs::Vector<int> nums = {1, 5, 3, 2, 6};
   int test[5] = {1, 5, 3, 2, 6};
@@ -10,6 +38,31 @@ TEST(VectorConstructorTest, VectorConstuctorIL) {
     ASSERT_EQ(test[i], nums.at(i));
   }
 }
+
+
+TEST(VectorGrowTest, VectorGrowNotMax) {
+  mqs::Vector<int> nums = {0, 1};
+  mqs::Vector<int> to_grow(nums);
+  for(int i = 2; i < 4; i++) {
+    to_grow.push_back(i);
+  }
+  ASSERT_EQ(4, to_grow.size());
+  ASSERT_EQ(8, to_grow.capacity());
+  for(size_t i = 0; i < to_grow.size(); i++) {
+    ASSERT_EQ(i, to_grow.at(i));
+  }
+  mqs::Vector<int> nums2 = {0, 1, 2, 3, 4};
+  mqs::Vector<int> to_grow2(nums2);
+  for(int i = 5; i < 10; i++) {
+    to_grow2.push_back(i);
+  }
+  ASSERT_EQ(10, to_grow2.size());
+  ASSERT_EQ(20, to_grow2.capacity());
+  for(size_t i = 0; i < to_grow.size(); i++) {
+    ASSERT_EQ(i, to_grow.at(i));
+  }
+}
+
 
 TEST(RBTInsertTest, RBTInsertFind) {
   std::vector<int> nums = {5, 4, 1, 3, 2, 6, 7, 8};
