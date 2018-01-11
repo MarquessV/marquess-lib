@@ -40,7 +40,7 @@ TEST(VectorConstructorTest, VectorConstuctorIL) {
 }
 
 
-TEST(VectorGrowTest, VectorGrowNotMax) {
+TEST(VectorGrowTest, VectorGrowShrink) {
   mqs::Vector<int> nums = {0, 1};
   mqs::Vector<int> to_grow(nums);
   for(int i = 2; i < 4; i++) {
@@ -51,6 +51,15 @@ TEST(VectorGrowTest, VectorGrowNotMax) {
   for(size_t i = 0; i < to_grow.size(); i++) {
     ASSERT_EQ(i, to_grow.at(i));
   }
+  for(int i = 0; i < 2; i++) {
+    to_grow.pop();
+  }
+  ASSERT_EQ(2, to_grow.size());
+  ASSERT_EQ(4, to_grow.capacity());
+  for(size_t i = 0; i < to_grow.size(); i++) {
+    ASSERT_EQ(i, to_grow.at(i));
+  }
+
   mqs::Vector<int> nums2 = {0, 1, 2, 3, 4};
   mqs::Vector<int> to_grow2(nums2);
   for(int i = 5; i < 10; i++) {
@@ -58,8 +67,47 @@ TEST(VectorGrowTest, VectorGrowNotMax) {
   }
   ASSERT_EQ(10, to_grow2.size());
   ASSERT_EQ(20, to_grow2.capacity());
-  for(size_t i = 0; i < to_grow.size(); i++) {
-    ASSERT_EQ(i, to_grow.at(i));
+  for(size_t i = 0; i < to_grow2.size(); i++) {
+    ASSERT_EQ(i, to_grow2.at(i));
+  }
+  for(int i = 0; i < 5; i++) {
+    to_grow2.pop();
+  }
+  ASSERT_EQ(5, to_grow2.size());
+  ASSERT_EQ(10, to_grow2.capacity());
+  for(size_t i = 0; i < to_grow2.size(); i++) {
+    ASSERT_EQ(i, to_grow2.at(i));
+  }
+}
+
+TEST(VectorInsertTest, VectorInsert)
+{
+  mqs::Vector<int> verify = {0, 1, 2, 3, 4, 5};
+  mqs::Vector<int> test = {0, 2, 3, 4, 5};
+  test.insert(1, 1);
+  ASSERT_EQ(verify.size(), test.size());
+  for(size_t i = 0; i < verify.size(); i++) {
+    ASSERT_EQ(verify.at(i), i);
+    ASSERT_EQ(verify.at(i), test.at(i));
+  }
+}
+
+TEST(VectorRemoveTest, VectorRemove)
+{
+  mqs::Vector<int> test = {0, 1, 2, 2, 3, 4, 5};
+  test.remove((size_t)2);
+  ASSERT_EQ(6, test.size());
+  for(size_t i = 0; i < test.size(); i++) {
+    ASSERT_EQ(i, test[i]);
+  }
+
+  for(int i = 0; i < 5; i++) {
+    test.insert(1, 2);
+  }
+  ASSERT_EQ(6, test.remove((int)2));
+  test.insert(2, 2);
+  for(size_t i = 0; i < test.size(); i++) {
+    ASSERT_EQ(i, test[i]);
   }
 }
 

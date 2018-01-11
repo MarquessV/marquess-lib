@@ -13,8 +13,6 @@
 #include <initializer_list>
 #include <limits> // for std::numeric_limits<size_t>
 
-#include <iostream>
-
 namespace mqs
 {
 
@@ -23,7 +21,7 @@ namespace mqs
   {
   private:
     T* arr;
-    size_t _size; 
+    size_t _size;
     size_t _capacity;
 
     void range_check(size_t i) const {
@@ -46,7 +44,7 @@ namespace mqs
 
     void shrink_vector()
     {
-      if(size < _capacity/4) {
+      if(_size <= _capacity/4) {
         _capacity /= 2;
         T* new_arr = new T[_capacity];
         for(size_t i = 0; i < _size; i++) {
@@ -66,7 +64,7 @@ namespace mqs
     /**
      * Creates a vector of size n and max size of 2n or maximum value for size_t if 2n overflows.
      */
-    explicit Vector(const size_t n) 
+    explicit Vector(const size_t n)
     {
       _size = n;
       _capacity = 2*_size;
@@ -102,7 +100,7 @@ namespace mqs
     }
 
     /**
-     *  Initializer list constructor. Creates a vector with the values of initializer list l. 
+     *  Initializer list constructor. Creates a vector with the values of initializer list l.
      */
     Vector(const std::initializer_list<T>& l)
     {
@@ -121,7 +119,7 @@ namespace mqs
      */
     size_t size() const
     {
-      return _size; 
+      return _size;
     }
 
     /**
@@ -133,9 +131,9 @@ namespace mqs
       return _capacity;
     }
 
-    /** 
+    /**
      *  Returns true if the Vector is empty, false otherwise.
-     *  @return true if the Vector is empty, false otherwise. 
+     *  @return true if the Vector is empty, false otherwise.
      */
     bool empty() const
     {
@@ -151,10 +149,10 @@ namespace mqs
     {
       return arr[i];
     }
-    
 
-    /** 
-     *  Attempts to return the element at the given index. Throws an out_of_range exception if the index is greater 
+
+    /**
+     *  Attempts to return the element at the given index. Throws an out_of_range exception if the index is greater
      *  than or equal to the number of elements in the array.
      *  @param the index of the wanted element
      *  @return the element held at index i in the Vector.
@@ -193,12 +191,12 @@ namespace mqs
         grow_vector();
       }
     }
-    
+
     void prepend(const T& t)
     {
       insert(0, t);
     }
-    
+
     /**
      * Removes the last element in the array and returns it.
      * @return the last element in the array
@@ -210,6 +208,7 @@ namespace mqs
       }
       T top = arr[--_size];
       shrink_vector();
+      return top;
     }
 
     /**
@@ -228,7 +227,7 @@ namespace mqs
       }
       return _size;
     }
-    
+
     /**
      * Removes the element at the given index in the array and shifts forward elements back one.
      * Throws an out_of_range expception if the index is greater than or equal to the size of the vector
@@ -240,26 +239,27 @@ namespace mqs
       if(i == _size-1) {
         pop();
       } else {
-        for(int j = i+1; j < _size-1; j++) {
+        _size--;
+        for(size_t j = i; j < _size; j++) {
           arr[j] = arr[j+1];
         }
       }
-      _size--;
       shrink_vector();
     }
 
     /**
-     * Removes any occurent of the given element in the Vector. 
+     * Removes any occurent of the given element in the Vector.
      * @param the element to be removed.
      * @return the number of elements removed from the Vector.
      */
     size_t remove(const T& t)
     {
       size_t found = 0;
-      for(size_t i = 0; i < size; i++) {
+      for(size_t i = 0; i < _size; i++) {
         if(arr[i] == t) {
           remove(i);
           found++;
+          i--;
         }
       }
       return found;
