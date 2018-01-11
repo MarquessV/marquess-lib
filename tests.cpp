@@ -1,8 +1,17 @@
 #include "red_black_tree.hpp"
+#include "vector.hpp"
 #include <climits>
 #include <gtest/gtest.h>
 
-TEST(InsertTest, InsertFind) {
+TEST(VectorConstructorTest, VectorConstuctorIL) {
+  mqs::Vector<int> nums = {1, 5, 3, 2, 6};
+  int test[5] = {1, 5, 3, 2, 6};
+  for(size_t i = 0; i < nums.size(); i++) {
+    ASSERT_EQ(test[i], nums.at(i));
+  }
+}
+
+TEST(RBTInsertTest, RBTInsertFind) {
   std::vector<int> nums = {5, 4, 1, 3, 2, 6, 7, 8};
   mqs::red_black_tree<int> tree(nums);
   for(int n : nums) {
@@ -12,7 +21,7 @@ TEST(InsertTest, InsertFind) {
   ASSERT_EQ(false, tree.find(x));
 }
 
-TEST(InsertTest, InsertCorrectness) {
+TEST(RBTInsertTest, RBTInsertCorrectness) {
   std::vector<int> nums = {5, 4, 1, 3, 2, 6, 7, 8};
   mqs::red_black_tree<int> tree;
   std::vector<std::pair<int, bool>> verify0 = { {5, true} };
@@ -87,7 +96,7 @@ TEST(InsertTest, InsertCorrectness) {
   }
 }
 
-TEST(RemoveTest, RemoveSuccess) {
+TEST(RBTRemoveTest, RBTRemoveSuccess) {
   std::vector<int> nums = {5, 4, 1, 3, 2, 6, 7, 8};
   mqs::red_black_tree<int> tree(nums);
   for(unsigned int i = 0; i < nums.size(); i++) {
@@ -100,7 +109,7 @@ TEST(RemoveTest, RemoveSuccess) {
   }
 }
 
-TEST(RandomTest, RandomSuccess) {
+TEST(RBTRandomTest, RBTRandomSuccess) {
   srand(time(NULL));
   mqs::red_black_tree<int> tree;
   std::vector<int> nums;
