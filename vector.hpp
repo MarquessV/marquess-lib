@@ -265,6 +265,11 @@ namespace mqs
       return found;
     }
 
+    ~Vector()
+    {
+      delete []arr;
+    }
+
   };
 
 }
