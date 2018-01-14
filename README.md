@@ -10,11 +10,14 @@ Personal implementations of common data structures and algorithms.
 - [ ] Stack
 - [ ] Queue
 - [ ] Min Heap + Max Heap
-- [ ] Union Find
+- [ ] Union-Find Disjoint Sets
 - [ ] Trees
   - [ ] n-tree
   - [x] Red Black Tree
   - [ ] AVL Tree
+  - [ ] Segment Tree
+  - [ ] Fenwick Tree
+  - [ ] Splay Tree
 - [ ] Trie
 - [ ] Hash Table
 - [ ] Graphs
