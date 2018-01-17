@@ -3,7 +3,6 @@
 #include <climits>
 #include <gtest/gtest.h>
 
-
 TEST(VectorConstructorTest, VectorConstuctorDefault) {
   mqs::Vector<int> nil;
   ASSERT_EQ(true, nil.empty());
@@ -108,6 +107,17 @@ TEST(VectorRemoveTest, VectorRemove)
   test.insert(2, 2);
   for(size_t i = 0; i < test.size(); i++) {
     ASSERT_EQ(i, test[i]);
+  }
+}
+
+TEST(VectorStressTest, VectorStressFind)
+{
+  mqs::Vector<int> test;
+  for(size_t i = 0; i < 5000; i++) {
+    test.push_back(i);
+  }
+  for(size_t i = 0; i < 5000; i++) {
+    ASSERT_EQ(i, test.find(i));
   }
 }
 

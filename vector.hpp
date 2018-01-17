@@ -1,6 +1,6 @@
 /**
  *  vector.hpp
- *  An implementation of a resizable array
+ *  An implementation of an automatically resizing array
  *
  *  @author Marquess Valdez
  *  @version 1.0
@@ -176,6 +176,11 @@ namespace mqs
       grow_vector();
     }
 
+    /**
+     * Inserts an element at the given index, shifting elements forward, and increasing the
+     * size of the vector by 1.
+     * @param the desired index and the element to be inserted there.
+     */
     void insert(const size_t i, const T& t)
     {
       if(i == _size) {
@@ -192,6 +197,11 @@ namespace mqs
       }
     }
 
+    /**
+     * Inserts an element at the beginning of the Vector, shifting already existing elements
+     * forward.
+     * @param the element to be inserted.
+     */
     void prepend(const T& t)
     {
       insert(0, t);

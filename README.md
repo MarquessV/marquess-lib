@@ -3,7 +3,7 @@ Personal implementations of common data structures and algorithms.
 
 ## To Do
 
-- [ ] Vector
+- [x] Vector
 - [ ] Lists
   - [ ] Singly Linked
   - [ ] Doubly Linked
